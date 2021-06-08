@@ -1,0 +1,26 @@
+﻿CREATE TABLE [adi].[Steward_MSSPPartAClaimProcedureCode] (
+    [MSSPPartAClaimProcedureCodeKey]  INT           IDENTITY (1, 1) NOT NULL,
+    [SrcFileName]                     VARCHAR (100) NULL,
+    [CreateDate]                      DATETIME      DEFAULT (sysdatetime()) NULL,
+    [CreateBy]                        VARCHAR (100) DEFAULT (suser_sname()) NULL,
+    [OriginalFileName]                VARCHAR (100) NULL,
+    [LastUpdatedBy]                   VARCHAR (100) NULL,
+    [LastUpdatedDate]                 DATETIME      NULL,
+    [DataDate]                        DATE          NULL,
+    [ClaimID]                         VARCHAR (50)  NULL,
+    [ICDProcedureSEQ]                 VARCHAR (10)  NULL,
+    [MedicareBeneficiaryID]           VARCHAR (50)  NULL,
+    [HealthInsuranceClaimNBR]         VARCHAR (50)  NULL,
+    [ClaimTypeCD]                     VARCHAR (10)  NULL,
+    [ClaimTypeDSC]                    VARCHAR (500) NULL,
+    [ICDProcedureCD]                  VARCHAR (10)  NULL,
+    [ICDProcedureDTS]                 DATE          NULL,
+    [UmbrellaHealthInsuranceClaimNBR] VARCHAR (50)  NULL,
+    [CMSCertificationNBR]             VARCHAR (50)  NULL,
+    [ClaimStartDTS]                   DATE          NULL,
+    [ClaimEndDTS]                     DATE          NULL,
+    [ICDRevisionCD]                   VARCHAR (10)  NULL,
+    [FileNM]                          VARCHAR (50)  NULL,
+    PRIMARY KEY CLUSTERED ([MSSPPartAClaimProcedureCodeKey] ASC)
+);
+

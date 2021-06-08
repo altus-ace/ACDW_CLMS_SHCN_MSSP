@@ -1,0 +1,57 @@
+﻿
+
+CREATE PROCEDURE [adi].[ExtractMemberInfoFrmAHS]
+
+AS
+
+BEGIN
+BEGIN TRAN
+BEGIN TRY
+  
+
+	INSERT INTO		[adi].[AhsMemberInfo]( [SrcFileName],  [DataDate], [CLientMemberKey], [PcpPreferredNPI], [PcpPreferredTIN], [PcpPreferredEffectiveDate])
+	SELECT DISTINCT 'Ahs_Altus_Prod_PreferredProvider'
+					, CONVERT(DATE,PP.CREATED_ON) AS [DataDate]
+					, PDT.CLIENT_PATIENT_ID AS ClientMemberKey
+					, ProviderNPI.INDEX_VALUE AS Npi
+					, providerTin.INDEX_VALUE AS Tin
+					, CONVERT(DATE,PP.CREATED_ON) AS [PcpPreferredEffectiveDate]   
+	FROM			Ahs_Altus_Prod.dbo.PATIENT_PHYSICIAN PP   
+	LEFT JOIN		Ahs_Altus_Prod.dbo.PHYSICIAN_DEMOGRAPHY PD 
+	ON				PD.PHYSICIAN_ID = PP.PHYSICIAN_ID
+	LEFT JOIN		Ahs_Altus_Prod.dbo.PATIENT_DETAILS PDT
+	ON				PDT.PATIENT_ID = PP.PATIENT_ID
+	LEFT JOIN		Ahs_Altus_Prod.dbo.CARE_STAFF_DETAILS CSUPD 
+	ON				CSUPD.MEMBER_ID = PP.UPDATED_BY
+	LEFT JOIN		Ahs_Altus_Prod.dbo.CARE_STAFF_DETAILS CSCRD 
+	ON				CSCRD.MEMBER_ID = PP.CREATED_BY
+	JOIN			(		SELECT		pi.PROVIDER_ID, pi.INDEX_VALUE
+							FROM		Ahs_Altus_Prod.dbo.PROVIDER_INDEX PI 			 			 
+							WHERE		PI.INDEX_ID IN (2,3,8) 			
+					)		AS ProviderNPI  
+	ON				PP.PHYSICIAN_ID = ProviderNPI.PROVIDER_ID
+	JOIN			(		SELECT		pi.PROVIDER_ID, pi.INDEX_VALUE 
+							FROM		Ahs_Altus_Prod.dbo.PROVIDER_INDEX PI 			 			 
+							WHERE		PI.INDEX_ID IN (1,10) 			
+					)		AS ProviderTin
+	ON				PP.PHYSICIAN_ID = ProviderTin.PROVIDER_ID
+	WHERE			PP.CARE_TEAM_ID = 2
+	AND				PP.IS_PCP = 1
+	AND				PP.DELETED_BY IS NULL
+	AND				GETDATE() BETWEEN PP.START_DATE and ISNULL(PP.END_DATE, '12/31/2099')
+	AND				((CSUPD.FIRST_NAME <> 'ETL' AND CSUPD.LAST_NAME <> 'USER')	 
+	OR				(CSCRD.FIRST_NAME <> 'ETL' AND CSCRD.LAST_NAME <> 'USER')) 
+	--AND				CONVERT(DATE,PP.CREATED_ON) = CONVERT(DATE,GETDATE())
+	ORDER BY		PcpPreferredEffectiveDate DESC
+
+
+
+END TRY
+BEGIN CATCH
+EXECUTE [dbo].[usp_QM_Error_handler]
+END CATCH
+COMMIT
+
+END
+
+

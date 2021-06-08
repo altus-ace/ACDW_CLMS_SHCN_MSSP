@@ -1,0 +1,26 @@
+﻿CREATE TABLE [adi].[tmp_MemberListValidation] (
+    [MemberListValidationKey]                                    INT             IDENTITY (1, 1) NOT NULL,
+    [SrcFileName]                                                VARCHAR (100)   NULL,
+    [CreateDate]                                                 DATETIME        DEFAULT (sysdatetime()) NULL,
+    [CreateBy]                                                   VARCHAR (100)   DEFAULT (suser_sname()) NULL,
+    [OriginalFileName]                                           VARCHAR (100)   NULL,
+    [LastUpdatedBy]                                              VARCHAR (100)   NULL,
+    [LastUpdatedDate]                                            DATETIME        NULL,
+    [DataDate]                                                   DATE            NULL,
+    [MBI_ID]                                                     VARCHAR (50)    NULL,
+    [HICN]                                                       VARCHAR (50)    NULL,
+    [PatientFirstName]                                           VARCHAR (50)    NULL,
+    [PatientLastName]                                            VARCHAR (50)    NULL,
+    [DOB]                                                        DATE            NULL,
+    [Gender]                                                     VARCHAR (5)     NULL,
+    [AttributedNPI]                                              VARCHAR (50)    NULL,
+    [ProviderName]                                               VARCHAR (50)    NULL,
+    [HCCRiskScore]                                               DECIMAL (10, 2) NULL,
+    [New_2020_Patient]                                           VARCHAR (5)     NULL,
+    [PatientEMvisitwithSHCNProvider]                             VARCHAR (5)     NULL,
+    [PatientEligibleCMSDiabetesProgra]                           VARCHAR (5)     NULL,
+    [PatientenrolledChronicComplexPatientManagementprogram_2019] VARCHAR (50)    NULL,
+    [PatientidentifiedHighRisk]                                  VARCHAR (5)     NULL,
+    PRIMARY KEY CLUSTERED ([MemberListValidationKey] ASC)
+);
+

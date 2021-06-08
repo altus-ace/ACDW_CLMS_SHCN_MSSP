@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [altus_sa]
+    WITH PASSWORD = N'eiq0Wb{embaoynGAel,.Lgx!msFT7_&#$!~<=awo9Cgs3ego', SID = 0x985BF64C3F1F634B9495FA3249D7412E, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+

@@ -1,0 +1,27 @@
+﻿CREATE TABLE [adi].[Steward_MSSPRiskPopulation] (
+    [MSSPRiskPopulationKey]   INT           IDENTITY (1, 1) NOT NULL,
+    [SrcFileName]             VARCHAR (100) NULL,
+    [CreateDate]              DATETIME      DEFAULT (sysdatetime()) NULL,
+    [CreateBy]                VARCHAR (100) DEFAULT (suser_sname()) NULL,
+    [OriginalFileName]        VARCHAR (100) NULL,
+    [LastUpdatedBy]           VARCHAR (100) NULL,
+    [LastUpdatedDate]         DATETIME      NULL,
+    [DataDate]                DATE          NULL,
+    [YearNBR]                 VARCHAR (4)   NULL,
+    [Region]                  VARCHAR (50)  NULL,
+    [MedicareBeneficiaryID]   VARCHAR (50)  NULL,
+    [HealthInsuranceClaimNBR] VARCHAR (50)  NULL,
+    [FirstNM]                 VARCHAR (50)  NULL,
+    [LastNM]                  VARCHAR (50)  NULL,
+    [SexCD]                   VARCHAR (1)   NULL,
+    [BirthDTS]                DATE          NULL,
+    [DeathDTS]                DATE          NULL,
+    [CountyNM]                VARCHAR (50)  NULL,
+    [HomeStateCD]             VARCHAR (50)  NULL,
+    [CountyNBR]               VARCHAR (50)  NULL,
+    [NPIMapping]              VARCHAR (50)  NULL,
+    [BeneLivesinTX_LA_AR]     VARCHAR (1)   NULL,
+    [FileNM]                  VARCHAR (50)  NULL,
+    PRIMARY KEY CLUSTERED ([MSSPRiskPopulationKey] ASC)
+);
+
