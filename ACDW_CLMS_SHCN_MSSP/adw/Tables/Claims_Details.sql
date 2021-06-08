@@ -1,0 +1,393 @@
+﻿CREATE TABLE [adw].[Claims_Details] (
+    [ClaimsDetailsKey]             INT             IDENTITY (1, 1) NOT NULL,
+    [CLAIM_NUMBER]                 VARCHAR (50)    NULL,
+    [SUBSCRIBER_ID]                VARCHAR (50)    NULL,
+    [SEQ_CLAIM_ID]                 VARCHAR (50)    NULL,
+    [LINE_NUMBER]                  SMALLINT        NULL,
+    [SUB_LINE_CODE]                VARCHAR (50)    NULL,
+    [DETAIL_SVC_DATE]              DATE            NULL,
+    [SVC_TO_DATE]                  DATE            NULL,
+    [PROCEDURE_CODE]               VARCHAR (50)    NULL,
+    [MODIFIER_CODE_1]              VARCHAR (20)    NULL,
+    [MODIFIER_CODE_2]              VARCHAR (20)    NULL,
+    [MODIFIER_CODE_3]              VARCHAR (20)    NULL,
+    [MODIFIER_CODE_4]              VARCHAR (20)    NULL,
+    [REVENUE_CODE]                 SMALLINT        NULL,
+    [PLACE_OF_SVC_CODE1]           VARCHAR (10)    NULL,
+    [PLACE_OF_SVC_CODE2]           VARCHAR (10)    NULL,
+    [PLACE_OF_SVC_CODE3]           VARCHAR (10)    NULL,
+    [QUANTITY]                     NUMERIC (12, 2) NULL,
+    [BILLED_AMT]                   MONEY           NULL,
+    [PAID_AMT]                     MONEY           NULL,
+    [NDC_CODE]                     VARCHAR (20)    NULL,
+    [RX_GENERIC_BRAND_IND]         VARCHAR (50)    NULL,
+    [RX_SUPPLY_DAYS]               VARCHAR (50)    NULL,
+    [RX_DISPENSING_FEE_AMT]        MONEY           NULL,
+    [RX_INGREDIENT_AMT]            MONEY           NULL,
+    [RX_FORMULARY_IND]             VARCHAR (50)    NULL,
+    [RX_DATE_PRESCRIPTION_WRITTEN] DATE            NULL,
+    [RX_DATE_PRESCRIPTION_FILLED]  DATE            NULL,
+    [PRESCRIBING_PROV_TYPE_ID]     VARCHAR (10)    NULL,
+    [PRESCRIBING_PROV_ID]          VARCHAR (20)    NULL,
+    [BRAND_NAME]                   VARCHAR (50)    NULL,
+    [DRUG_STRENGTH_DESC]           VARCHAR (50)    NULL,
+    [GPI]                          VARCHAR (50)    NULL,
+    [GPI_DESC]                     VARCHAR (50)    NULL,
+    [CONTROLLED_DRUG_IND]          VARCHAR (50)    NULL,
+    [COMPOUND_CODE]                VARCHAR (50)    NULL,
+    [SrcAdiTableName]              VARCHAR (100)   NULL,
+    [SrcAdiKey]                    INT             NOT NULL,
+    [LoadDate]                     DATETIME        NOT NULL,
+    [CreatedDate]                  DATETIME        DEFAULT (sysdatetime()) NOT NULL,
+    [CreatedBy]                    VARCHAR (50)    DEFAULT (suser_sname()) NOT NULL,
+    [LastUpdatedDate]              DATETIME        DEFAULT (sysdatetime()) NOT NULL,
+    [LastUpdatedBy]                VARCHAR (50)    DEFAULT (suser_sname()) NOT NULL,
+    PRIMARY KEY CLUSTERED ([ClaimsDetailsKey] ASC)
+);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Ndx_ClmDets_RevCode]
+    ON [adw].[Claims_Details]([REVENUE_CODE] ASC)
+    INCLUDE([ClaimsDetailsKey], [SEQ_CLAIM_ID], [PLACE_OF_SVC_CODE1], [PLACE_OF_SVC_CODE2]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Ndx_ClmDets_ProcCode]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE] ASC)
+    INCLUDE([SEQ_CLAIM_ID]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Ndx_ClmDets_PlcOfSvc]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID] ASC)
+    INCLUDE([PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K9_K7_K3_K4]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE] ASC, [DETAIL_SVC_DATE] ASC, [SUBSCRIBER_ID] ASC, [SEQ_CLAIM_ID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K10]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_1] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K11]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_2] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K10_K4_K11_K12]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_1] ASC, [SEQ_CLAIM_ID] ASC, [MODIFIER_CODE_2] ASC, [MODIFIER_CODE_3] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K12]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K13]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K13_K10_K11_K12]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4] ASC, [MODIFIER_CODE_1] ASC, [MODIFIER_CODE_2] ASC, [MODIFIER_CODE_3] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K12_K10_K11_K13]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3] ASC, [MODIFIER_CODE_1] ASC, [MODIFIER_CODE_2] ASC, [MODIFIER_CODE_4] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K11_K4_K12_K13]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_2] ASC, [SEQ_CLAIM_ID] ASC, [MODIFIER_CODE_3] ASC, [MODIFIER_CODE_4] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K13_K4_K9]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4] ASC, [SEQ_CLAIM_ID] ASC, [PROCEDURE_CODE] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K12_K4_K13_K9]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3] ASC, [SEQ_CLAIM_ID] ASC, [MODIFIER_CODE_4] ASC, [PROCEDURE_CODE] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K11_K4_K12_K13_9_10]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_2] ASC, [SEQ_CLAIM_ID] ASC, [MODIFIER_CODE_3] ASC, [MODIFIER_CODE_4] ASC)
+    INCLUDE([PROCEDURE_CODE], [MODIFIER_CODE_1]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K13_K4]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4] ASC, [SEQ_CLAIM_ID] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K12_K4_K13]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3] ASC, [SEQ_CLAIM_ID] ASC, [MODIFIER_CODE_4] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K13_K4_K9_K15]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4] ASC, [SEQ_CLAIM_ID] ASC, [PROCEDURE_CODE] ASC, [PLACE_OF_SVC_CODE1] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K10_K4_K11]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_1] ASC, [SEQ_CLAIM_ID] ASC, [MODIFIER_CODE_2] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Ndx_ClmDets_SubIdProcCode]
+    ON [adw].[Claims_Details]([SUBSCRIBER_ID] ASC, [PROCEDURE_CODE] ASC)
+    INCLUDE([SEQ_CLAIM_ID]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K14_K21_K9_K15_K1_K4_K7]
+    ON [adw].[Claims_Details]([REVENUE_CODE] ASC, [NDC_CODE] ASC, [PROCEDURE_CODE] ASC, [PLACE_OF_SVC_CODE1] ASC, [ClaimsDetailsKey] ASC, [SEQ_CLAIM_ID] ASC, [DETAIL_SVC_DATE] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K9_K14_K4_K21_K15_K1_K7]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE] ASC, [REVENUE_CODE] ASC, [SEQ_CLAIM_ID] ASC, [NDC_CODE] ASC, [PLACE_OF_SVC_CODE1] ASC, [ClaimsDetailsKey] ASC, [DETAIL_SVC_DATE] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K15_K1_K4_K14_K21_K9_K7]
+    ON [adw].[Claims_Details]([PLACE_OF_SVC_CODE1] ASC, [ClaimsDetailsKey] ASC, [SEQ_CLAIM_ID] ASC, [REVENUE_CODE] ASC, [NDC_CODE] ASC, [PROCEDURE_CODE] ASC, [DETAIL_SVC_DATE] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [_dta_index_Claims_Details_17_393104491__K21_K9_K15_K14_K1_K4_K7]
+    ON [adw].[Claims_Details]([NDC_CODE] ASC, [PROCEDURE_CODE] ASC, [PLACE_OF_SVC_CODE1] ASC, [REVENUE_CODE] ASC, [ClaimsDetailsKey] ASC, [SEQ_CLAIM_ID] ASC, [DETAIL_SVC_DATE] ASC);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_8_3_14_13]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE], [SEQ_CLAIM_ID], [PLACE_OF_SVC_CODE1], [REVENUE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_8_13]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE], [REVENUE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_3_13_20_8]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [REVENUE_CODE], [NDC_CODE], [PROCEDURE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_3_1_13_20_8]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [ClaimsDetailsKey], [REVENUE_CODE], [NDC_CODE], [PROCEDURE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_20_3_8_14]
+    ON [adw].[Claims_Details]([NDC_CODE], [SEQ_CLAIM_ID], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_14_3_13_20_1]
+    ON [adw].[Claims_Details]([PLACE_OF_SVC_CODE1], [SEQ_CLAIM_ID], [REVENUE_CODE], [NDC_CODE], [ClaimsDetailsKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_14_13_20]
+    ON [adw].[Claims_Details]([PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_1668200993_13_20_8_14_3_1]
+    ON [adw].[Claims_Details]([REVENUE_CODE], [NDC_CODE], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [SEQ_CLAIM_ID], [ClaimsDetailsKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_21_4_1_9_15]
+    ON [adw].[Claims_Details]([NDC_CODE], [SEQ_CLAIM_ID], [ClaimsDetailsKey], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_3_4_7]
+    ON [adw].[Claims_Details]([SUBSCRIBER_ID], [SEQ_CLAIM_ID], [DETAIL_SVC_DATE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_12_14_21_10]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_12_4_13_9_15_14_21_1_10]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3], [SEQ_CLAIM_ID], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [ClaimsDetailsKey], [MODIFIER_CODE_1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_13_4_9_15_14_21_1_10_11]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4], [SEQ_CLAIM_ID], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [ClaimsDetailsKey], [MODIFIER_CODE_1], [MODIFIER_CODE_2]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_14_21_10_11_12_13_9_15_4_1]
+    ON [adw].[Claims_Details]([REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [SEQ_CLAIM_ID], [ClaimsDetailsKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_14_4_21_1_10_11_12]
+    ON [adw].[Claims_Details]([REVENUE_CODE], [SEQ_CLAIM_ID], [NDC_CODE], [ClaimsDetailsKey], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_14_4_21_10_11_12_13_9]
+    ON [adw].[Claims_Details]([REVENUE_CODE], [SEQ_CLAIM_ID], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [PROCEDURE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_12_13]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3], [MODIFIER_CODE_4]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_15_14_21_10_11_12_13]
+    ON [adw].[Claims_Details]([PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_21_4_1_10_11_12_13_9_15]
+    ON [adw].[Claims_Details]([NDC_CODE], [SEQ_CLAIM_ID], [ClaimsDetailsKey], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_10_11_12_13_21_1_14_9]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [NDC_CODE], [ClaimsDetailsKey], [REVENUE_CODE], [PROCEDURE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_11_12_13_9_15_14_21_1]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [ClaimsDetailsKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_21_10_11_12_13_9_15]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_9_14_21_10_11_12]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_9_4_15_14_21_1_10_11_12]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE], [SEQ_CLAIM_ID], [PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [ClaimsDetailsKey], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_15_4_14_21_1_10_11_12_13]
+    ON [adw].[Claims_Details]([PLACE_OF_SVC_CODE1], [SEQ_CLAIM_ID], [REVENUE_CODE], [NDC_CODE], [ClaimsDetailsKey], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_11_14_21]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_2], [REVENUE_CODE], [NDC_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_13_14_21_10_11]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_4], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_10_4_11_12_13_9_15_14]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_1], [SEQ_CLAIM_ID], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [REVENUE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_11_12_13]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_10_11]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_1], [MODIFIER_CODE_2]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_10_14]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_1], [REVENUE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_12_4_13_9_15_14_21_10]
+    ON [adw].[Claims_Details]([MODIFIER_CODE_3], [SEQ_CLAIM_ID], [MODIFIER_CODE_4], [PROCEDURE_CODE], [PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_15_4_14_21_10_11_12_13]
+    ON [adw].[Claims_Details]([PLACE_OF_SVC_CODE1], [SEQ_CLAIM_ID], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3], [MODIFIER_CODE_4]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_9_4_15_14_21_10_11_12]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE], [SEQ_CLAIM_ID], [PLACE_OF_SVC_CODE1], [REVENUE_CODE], [NDC_CODE], [MODIFIER_CODE_1], [MODIFIER_CODE_2], [MODIFIER_CODE_3]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_9_4_14_1]
+    ON [adw].[Claims_Details]([PROCEDURE_CODE], [SEQ_CLAIM_ID], [REVENUE_CODE], [ClaimsDetailsKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_7_4_21_1_15]
+    ON [adw].[Claims_Details]([DETAIL_SVC_DATE], [SEQ_CLAIM_ID], [NDC_CODE], [ClaimsDetailsKey], [PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_21_7_15_9_1]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [NDC_CODE], [DETAIL_SVC_DATE], [PLACE_OF_SVC_CODE1], [PROCEDURE_CODE], [ClaimsDetailsKey]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_15_1_14_21_9_7]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [PLACE_OF_SVC_CODE1], [ClaimsDetailsKey], [REVENUE_CODE], [NDC_CODE], [PROCEDURE_CODE], [DETAIL_SVC_DATE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_1_15_7]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [ClaimsDetailsKey], [PLACE_OF_SVC_CODE1], [DETAIL_SVC_DATE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_4_9_7_1_15]
+    ON [adw].[Claims_Details]([SEQ_CLAIM_ID], [PROCEDURE_CODE], [DETAIL_SVC_DATE], [ClaimsDetailsKey], [PLACE_OF_SVC_CODE1]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_1_7_4_21_9]
+    ON [adw].[Claims_Details]([ClaimsDetailsKey], [DETAIL_SVC_DATE], [SEQ_CLAIM_ID], [NDC_CODE], [PROCEDURE_CODE]);
+
+
+GO
+CREATE STATISTICS [_dta_stat_393104491_14_1]
+    ON [adw].[Claims_Details]([REVENUE_CODE], [ClaimsDetailsKey]);
+
+
+GO
+CREATE TRIGGER adw.ClaimsDetails_AfterUpdate
+ON adw.Claims_Details
+AFTER UPDATE 
+AS
+   UPDATE adw.Claims_Details
+   SET LastUpdatedDate = SYSDATETIME()
+	, LastUpdatedBy   = SYSTEM_USER
+   FROM Inserted i
+   WHERE adw.Claims_Details.ClaimsDetailsKey = i.ClaimsDetailsKey;
